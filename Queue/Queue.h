@@ -23,10 +23,22 @@
             void print(const void * dataPtr);
             ---
 */
-#include <stdio.h>
-#include <stdlib.h>
-#include "QueueStructNodes.h"
 #include "QueueUtils.h"
+
+#ifndef QUEUE_STRUCT_NODES
+#define QUEUE_STRUCT_NODES "QueueStructNodes.h"
+#include QUEUE_STRUCT_NODES
+#endif
+
+#ifndef STDIO_H
+#define STDIO_H <stdio.h>
+#include STDIO_H
+#endif
+
+#ifndef STDLIB_H
+#define STDLIB_H <stdlib.h>
+#include STDLIB_H
+#endif
 
 int isQueue(Queue *queue);
 int isEmpty(Queue *queue);
