@@ -1,6 +1,8 @@
 /**
- * @author AJAY G.
- * @copyright AJAY G. - Code Stack 2020
+ * @author Ajay G.
+ * @copyright Ajay G. - Code Stack 2020
+ * @desc This code can not be used for commercial purpose. 
+ *       Can be used for educational, learning and any personal usage.
  */
 /*  title: Queue.h
     + _Author_      : *AJAY G.*
