@@ -52,7 +52,7 @@ int isEmpty(Queue *queue);
         Queue *     - Pointer to allocated memory for *Queue*.
 
     See Also:
-        <enQueue>
+        <enQueue()>
 
 */
 Queue *createEmptyQueue()
@@ -73,7 +73,7 @@ Queue *createEmptyQueue()
         QueueNode *     - Pointer to allocated memory for *QueueNode* and assign *dataPtr* to it.
 
     See Also:
-        <createEmptyQueue>
+        <createEmptyQueue()>
 
 */
 QueueNode *createQueueNode(void *dataPtr)
@@ -93,7 +93,7 @@ QueueNode *createQueueNode(void *dataPtr)
         void *dataPtr   - Pointer to Data.
 
     See Also:
-        <deQueue>
+        <deQueue()>
 
 */
 void enQueue(Queue *queue, void *dataPtr)
@@ -125,7 +125,7 @@ void enQueue(Queue *queue, void *dataPtr)
         void *dataPtr   - Pointer to Data.
 
     See Also:
-        <peek>
+        <peek()>
 
 */
 void *deQueue(Queue *queue)
@@ -168,7 +168,7 @@ void *deQueue(Queue *queue)
         void *dataPtr   - Pointer to Data.
 
     See Also:
-        <deQueue>
+        <deQueue()>
 
 */
 void *peek(Queue *queue)
@@ -202,7 +202,7 @@ void *peek(Queue *queue)
                           Otherwise Return *FALSE[0]*.
     
     See Also:
-        <isEmpty>
+        <isEmpty()>
 
 */
 int isQueue(Queue *queue)
@@ -223,7 +223,7 @@ int isQueue(Queue *queue)
                           Otherwise Return *FALSE[0]*.
     
     See Also:
-        <isQueue>
+        <isQueue()>
 
 */
 int isEmpty(Queue *queue)
@@ -248,7 +248,7 @@ int isEmpty(Queue *queue)
         void (*print)(const void *dataPtr)  - Function to print data.
         
     See Also:
-        <enQueue>
+        <enQueue()>
 */
 void printQueue(Queue *queue, void (*print)(const void *dataPtr))
 {
@@ -274,13 +274,14 @@ void printQueue(Queue *queue, void (*print)(const void *dataPtr))
 }
 
 /*  Function: clearQueue()
-    Remove all the elements from *Queue*, but do not remove *Queue* pointer which holds *QueueNode* pointers. 
+    Delete all the elements which are in *Queue* along with data pointer (frees memory pointed by data pointer),
+    but do not delete *Queue* pointer which holds *QueueNode* pointers. 
     
     Parameters:
         Queue *queue         - Pointer to Queue.
         
     See Also:
-        <deleteQueue>
+        <makeQueueEmpty()>
 */
 void clearQueue(Queue *queue)
 {
@@ -313,7 +314,8 @@ void clearQueue(Queue *queue)
 }
 
 /*  Function: deleteQueue()
-    Remove all the elements from *Queue*, and also remove *Queue* pointer which holds *QueueNode* pointers. 
+    delete all the elements from *Queue* along with data pointer (frees memory pointed by data pointer),
+    and also delete *Queue* pointer which holds *QueueNode* pointers. 
     
     Parameters:
         Queue *queue        - Pointer to Queue.
@@ -322,7 +324,7 @@ void clearQueue(Queue *queue)
         Queue *queue        - NULL pointer as previous pointer is deleted.
     
     See Also:   
-        <clearQueue>
+        <clearQueue()>
 */
 Queue *deleteQueue(Queue *queue)
 {
@@ -337,5 +339,32 @@ Queue *deleteQueue(Queue *queue)
     free(queue);
     queue = NULL;
     printf(QUEUE_DELETED_INFO);
+    return queue;
+}
+
+/*  Function: makeQueueEmpty()
+    Delete all the elements which are in *Queue* but data pointer are not deleted (Not frees memory pointed by data pointer),
+    and also do not delete *Queue* pointer which holds *QueueNode* pointers. 
+    
+    Parameters:
+        Queue *queue        - Pointer to *Queue*.
+        
+    Returns:
+        Queue *queue        - Pointer to *Queue*.
+    
+    See Also:   
+        <clearQueue()>
+*/
+Queue *makeQueueEmpty(Queue *queue)
+{
+    QueueNode *ptr = queue->front;
+    QueueNode *temp;
+    while (ptr != NULL)
+    {
+        temp = ptr;
+        ptr = ptr->next;
+        free(temp);
+    }
+    queue->front = queue->rear = NULL;
     return queue;
 }

@@ -53,49 +53,6 @@
 #include STDLIB_H
 #endif
 
-/*	About: Thread Safety
-	Something
-
-*/
-
-/*  Function: max()
-    Check maximum from given integer
-    
-    Parameters:
-        int num2   	- 1st number.
-		int num2   	- 2nd number.
-	 
-    Returns:
-        int			- Maximum from inputs.
-
-    See Also:
-        <getHeight>
-
-*/
-int max(int num1, int num2)
-{
-	return (num1 > num2) ? num1 : num2;
-}
-
-/*  Function: getHeight()
-    Return height of *Tree Node* in tree.
-    
-    Parameters:
-        BinaryTreeNode *ptr		- _BinaryTreeNode_ which hieght should be returned.
-	 
-    Returns:
-        int						- Height of node.
-
-    See Also:
-        <getBalanceFactor>
-
-*/
-int getHeight(BinaryTreeNode *ptr)
-{
-	if (ptr == NULL)
-		return 0;
-	return ptr->height;
-}
 
 /*  Function: getBalanceFactor()
     Return _Balance Factor_ of *Tree Node* in tree.
@@ -107,7 +64,7 @@ int getHeight(BinaryTreeNode *ptr)
         int						- _Balance Factor_ of node.
 
     See Also:
-        <getHeight>
+        <getHeight()>
 
 */
 int getBalanceFactor(BinaryTreeNode *ptr)
@@ -127,7 +84,7 @@ int getBalanceFactor(BinaryTreeNode *ptr)
         BinaryTreeNode *			- Return pointer to new root pointer of balanced sub tree.
 
     See Also:
-        <leftRotate>
+        <leftRotate()>
 
 */
 BinaryTreeNode *rightRotate(BinaryTreeNode *ptr)
@@ -154,7 +111,7 @@ BinaryTreeNode *rightRotate(BinaryTreeNode *ptr)
         BinaryTreeNode *			- Return pointer to new root pointer of balanced sub tree.
 
     See Also:
-        <rightRotate>
+        <rightRotate()>
 
 */
 BinaryTreeNode *leftRotate(BinaryTreeNode *ptr)
@@ -169,30 +126,6 @@ BinaryTreeNode *leftRotate(BinaryTreeNode *ptr)
 	ptrRight->height = max(getHeight(ptrRight->left), getHeight(ptrRight->right)) + 1;
 
 	return ptrRight;
-}
-
-/*  Function: createNode()
-    Allocate memory for new *BinaryTreeNode* and assign data pointer to it.
-    
-    Parameters:
-        void *dataPtr			- Pointer to data which would be stored in *Tree Node*.
-	 
-    Returns:
-        BinaryTreeNode *		- Return pointer to newly created *BinaryTreeNode*.
-
-    See Also:
-        <insertNode>
-
-*/
-BinaryTreeNode *createNode(void *dataPtr)
-{
-	BinaryTreeNode *node = (BinaryTreeNode *)
-		malloc(sizeof(BinaryTreeNode));
-	node->dataPtr = (void *)dataPtr;
-	node->left = NULL;
-	node->right = NULL;
-	node->height = 1;
-	return node;
 }
 
 /*  Function: insertNode()
@@ -210,7 +143,7 @@ BinaryTreeNode *createNode(void *dataPtr)
         BinaryTreeNode *							- Return new root pointer of balanced tree.
 
     See Also:
-        <deleteNode>
+        <deleteNode()>
 
 */
 BinaryTreeNode *insertNode(BinaryTreeNode *root, void *dataPtr, int (*compare)(const void *, const void *))
@@ -281,7 +214,7 @@ BinaryTreeNode *insertNode(BinaryTreeNode *root, void *dataPtr, int (*compare)(c
         BinaryTreeNode *							- Return new root pointer of balanced tree.
 
     See Also:
-        <insertNode>
+        <insertNode()>
 
 */
 BinaryTreeNode *deleteNode(BinaryTreeNode *root, void *dataPtr, int (*compare)(const void *, const void *))

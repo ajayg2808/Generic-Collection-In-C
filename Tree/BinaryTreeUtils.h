@@ -80,16 +80,106 @@
 
 /*  Defines: Message Strings
     
-    TREE_EMPTY_MSG          - Info message for empty tree.
+    TREE_EMPTY_MSG                     - Info message for empty tree.
+    TREE_NODE_NOT_FOUND_FOR_DELETE     - Info message for tree node search fail.
+    TREE_NODE_DELETE_SUCCESS           - Info message for tree node deletion success.
 */
 #define TREE_EMPTY_MSG "\n [INFO] : Tree is empty.\n"
+#define TREE_NODE_NOT_FOUND_FOR_DELETE "\n [INFO] : Tree Node not found for deletion.\n"
+#define TREE_NODE_DELETE_SUCCESS "\n [INFO] : Tree Node deleted successfully.\n"
 
 /*	define: 
 	SPACE_COUNT	- Space count increment value.
 */
 #define SPACE_COUNT 10
 
-/*  Function: searchNode()
+/*  Function: max()
+    Check maximum from given integer
+    
+    Parameters:
+        int num2   	- 1st number.
+		int num2   	- 2nd number.
+	 
+    Returns:
+        int			- Maximum from inputs.
+
+    See Also:
+        <getHeight()>
+
+*/
+int max(int num1, int num2)
+{
+    return (num1 > num2) ? num1 : num2;
+}
+
+/*  Function: getHeight()
+    Return height of *Tree Node* in tree.
+    
+    Parameters:
+        BinaryTreeNode *ptr		- _BinaryTreeNode_ which hieght should be returned.
+	 
+    Returns:
+        int						- Height of node.
+
+    See Also:
+        <getBalanceFactor()>
+
+*/
+int getHeight(BinaryTreeNode *ptr)
+{
+    if (ptr == NULL)
+        return 0;
+    return ptr->height;
+}
+
+/*  Function: updateHeight()
+    Update height for every *Tree Node* in any *Binary Tree*.
+    
+    Parameters:
+        BinaryTreeNode *ptr		- Pointer to root of *Tree* for which wanted to update height.
+	 
+    Returns:
+        int						- Height of *Tree*.
+
+    See Also:
+        <getHeight()>
+
+*/
+int updateHeight(BinaryTreeNode *root)
+{
+    if (root == NULL)
+        return 0;
+    if (root->left != NULL)
+        root->left->height = updateHeight(root->left);
+    if (root->right != NULL)
+        root->right->height = updateHeight(root->right);
+    root->height = max(getHeight(root->left), getHeight(root->right)) + 1;
+    return root->height;
+}
+
+/*  Function: createNode()
+    Allocate memory for new *BinaryTreeNode* and assign data pointer to it.
+    
+    Parameters:
+        void *dataPtr			- Pointer to data which would be stored in *Tree Node*.
+	 
+    Returns:
+        BinaryTreeNode *		- Return pointer to newly created *BinaryTreeNode*.
+
+
+*/
+BinaryTreeNode *createNode(void *dataPtr)
+{
+    BinaryTreeNode *node = (BinaryTreeNode *)
+        malloc(sizeof(BinaryTreeNode));
+    node->dataPtr = (void *)dataPtr;
+    node->left = NULL;
+    node->right = NULL;
+    node->height = 1;
+    return node;
+}
+
+/*  Function: searchNodeBST()
     Search *Tree Node* with given data in *Binary Tree*.
     
     Parameters:
@@ -105,31 +195,32 @@
 						  Otherwise return FALSE[0].
 
     See Also:
-        <countTotalNodes>
+        <countTotalNodes()>
 */
-int searchNode(BinaryTreeNode *root, void *dataPtr, int (*compare)(const void *, const void *))
+int searchNodeBST(BinaryTreeNode *root, void *dataPtr, int (*compare)(const void *, const void *))
 {
-	if (root == NULL)
-	{
-		return FALSE;
-	}
+    if (root == NULL)
+    {
+        return FALSE;
+    }
 
-	if ((*compare)(dataPtr, root->dataPtr) < 0)
-	{
-		return searchNode(root->left, dataPtr, compare);
-	}
-	else if ((*compare)(dataPtr, root->dataPtr) > 0)
-	{
-		return searchNode(root->right, dataPtr, compare);
-	}
-	else
-	{
-		return TRUE;
-	}
+    if ((*compare)(dataPtr, root->dataPtr) < 0)
+    {
+        return searchNodeBST(root->left, dataPtr, compare);
+    }
+    else if ((*compare)(dataPtr, root->dataPtr) > 0)
+    {
+        return searchNodeBST(root->right, dataPtr, compare);
+    }
+    else
+    {
+        return TRUE;
+    }
 }
 
 /*  Function: deleteTree()
     Delete *Binary Tree*. Deletes all the nodes in *Binary Tree*.
+    Also delete all data pointers (Frees memory pointed by data pointer).
     
     Parameters:
         BinaryTreeNode *root			- Pointer to root node of tree, which we wanna delete.
@@ -138,25 +229,25 @@ int searchNode(BinaryTreeNode *root, void *dataPtr, int (*compare)(const void *,
         BinaryTreeNode *				- Return NULL when tree is deleted successfully to avoid dangling pointer
 
     See Also:
-        <countTotalNodes>
+        <countTotalNodes()>
 */
 BinaryTreeNode *deleteTree(BinaryTreeNode *root)
 {
-	if (root != NULL)
-	{
-		if (root->left != NULL)
-		{
-			deleteTree(root->left);
-		}
-		if (root->right != NULL)
-		{
-			deleteTree(root->right);
-		}
-		free(root->dataPtr);
-		free(root);
-		root == NULL;
-	}
-	return root;
+    if (root != NULL)
+    {
+        if (root->left != NULL)
+        {
+            deleteTree(root->left);
+        }
+        if (root->right != NULL)
+        {
+            deleteTree(root->right);
+        }
+        free(root->dataPtr);
+        free(root);
+        root == NULL;
+    }
+    return root;
 }
 
 /*  Function: countTotalNodes()
@@ -169,18 +260,18 @@ BinaryTreeNode *deleteTree(BinaryTreeNode *root)
         int								- Count of nodes.
 
     See Also:
-        <treeToArray>
+        <treeToArray()>
 */
 int countTotalNodes(BinaryTreeNode *root)
 {
-	if (root == NULL)
-		return 0;
+    if (root == NULL)
+        return 0;
 
-	int count = 1;
+    int count = 1;
 
-	count += (countTotalNodes(root->left) + countTotalNodes(root->right));
+    count += (countTotalNodes(root->left) + countTotalNodes(root->right));
 
-	return count;
+    return count;
 }
 
 /*  Function: treeToArray()
@@ -196,23 +287,23 @@ int countTotalNodes(BinaryTreeNode *root)
         int							- Total nodes copied in Array / Index to last element of array.
 
     See Also:
-        <printInOrder>
+        <printInOrder()>
 */
 int treeToArray(BinaryTreeNode *root, int *array[], int i)
 {
-	if (root == NULL)
-		return i;
+    if (root == NULL)
+        return i;
 
-	if (root->left != NULL)
-		i = treeToArray(root->left, array, i);
+    if (root->left != NULL)
+        i = treeToArray(root->left, array, i);
 
-	array[i] = (int *)root->dataPtr;
-	i++;
+    array[i] = (int *)root->dataPtr;
+    i++;
 
-	if (root->right != NULL)
-		i = treeToArray(root->right, array, i);
+    if (root->right != NULL)
+        i = treeToArray(root->right, array, i);
 
-	return i;
+    return i;
 }
 
 /*  Function: printInOrder()
@@ -223,16 +314,16 @@ int treeToArray(BinaryTreeNode *root, int *array[], int i)
 		void (*print)(const void *)     - Function to print data.
 	 
     See Also:
-        <print2D>
+        <print2D()>
 */
 void printInOrder(BinaryTreeNode *root, void (*print)(const void *))
 {
-	if (root != NULL)
-	{
-		printInOrder(root->left, print);
-		(*print)(root->dataPtr);
-		printInOrder(root->right, print);
-	}
+    if (root != NULL)
+    {
+        printInOrder(root->left, print);
+        (*print)(root->dataPtr);
+        printInOrder(root->right, print);
+    }
 }
 
 /*  Function: print2DUtil()
@@ -247,35 +338,35 @@ void printInOrder(BinaryTreeNode *root, void (*print)(const void *))
 		void (*print)(const void *)     - Function to print data.
 	 
     See Also:
-        <print2D>	: Wrapper over <print2DUtil>
+        <print2D>	: Wrapper over <print2DUtil()>
 */
 void print2DUtil(BinaryTreeNode *root, int space, void (*print)(const void *))
 {
-	int i;
-	// Base case
-	if (root == NULL)
-		return;
+    int i;
+    // Base case
+    if (root == NULL)
+        return;
 
-	// Increase distance between levels
-	space += SPACE_COUNT;
+    // Increase distance between levels
+    space += SPACE_COUNT;
 
-	// Process right child first
-	print2DUtil(root->right, space, print);
+    // Process right child first
+    print2DUtil(root->right, space, print);
 
-	// Print current node after space
-	// count
-	printf("\n");
-	for (i = SPACE_COUNT; i < space; i++)
-		printf(" ");
-	(*print)(root->dataPtr);
-	printf("\n");
+    // Print current node after space
+    // count
+    printf("\n");
+    for (i = SPACE_COUNT; i < space; i++)
+        printf(" ");
+    (*print)(root->dataPtr);
+    printf("\n");
 
-	// Process left child
-	print2DUtil(root->left, space, print);
+    // Process left child
+    print2DUtil(root->left, space, print);
 }
 
 /*  Function: print2D()
-	*Wrapper over <print2DUtil>*
+	*Wrapper over <print2DUtil()>*
     Print 2D represenatation of *Binary Tree*.
 	Print *Binary Tree* in _horizontal_ manner.
 	It is compatible with any size of tree.
@@ -285,38 +376,12 @@ void print2DUtil(BinaryTreeNode *root, int space, void (*print)(const void *))
 		void (*print)(const void *)     - Function to print data.
 	 
     See Also:
-        <print2D>	: Wrapper over print2DUtil()
+        <print2D()>	: Wrapper over print2DUtil()
 */
 void print2D(BinaryTreeNode *root, void (*print)(const void *))
 {
-	// Pass initial space count as 0
-	print2DUtil(root, 0, print);
-}
-
-/*  Function: printLevelOrder()
-    Print 2D represenatation of *Binary Tree*.
-	Print *Binary Tree* in _vertical_ manner.
-	It is not compatible with bigger size of tree.
-    
-    Parameters:
-        BinaryTreeNode *root            - Pointer to *root* of tree
-        void (*print)(const void *)     - Function to print data.
-
-    See Also:
-        <printInOrder>
-
-*/
-void printLevelOrder(BinaryTreeNode *root, void (*print)(const void *))
-{
-    int h = root->height;
-    int i;
-    double space = (pow(2, h - 2) * 3) / 2 * 8;
-
-    for (i = 1; i <= h; i++)
-    {
-        printGivenLevel(root, i, space, print);
-        printf("\n\n\n");
-    }
+    // Pass initial space count as 0
+    print2DUtil(root, 0, print);
 }
 
 /*  Function: printGivenLevel()
@@ -329,7 +394,7 @@ void printLevelOrder(BinaryTreeNode *root, void (*print)(const void *))
         void (*print)(const void *)     - Function to print data.
 
     See Also:
-        <printLevelOrder>
+        <printLevelOrder()>
 
 */
 void printGivenLevel(BinaryTreeNode *root, int level, double space, void (*print)(const void *))
@@ -360,6 +425,37 @@ void printGivenLevel(BinaryTreeNode *root, int level, double space, void (*print
     }
 }
 
+/*  Function: printLevelOrder()
+    Print 2D represenatation of *Binary Tree*.
+	Print *Binary Tree* in _vertical_ manner.
+	It is not compatible with bigger size of tree.
+    
+    Parameters:
+        BinaryTreeNode *root            - Pointer to *root* of tree
+        void (*print)(const void *)     - Function to print data.
+
+    See Also:
+        <printInOrder()>
+
+*/
+void printLevelOrder(BinaryTreeNode *root, void (*print)(const void *))
+{
+	if(root == NULL)
+	{
+		printf(TREE_EMPTY_MSG);
+		return;
+	}
+    int h = root->height;
+    int i;
+    double space = (pow(2, h - 2) * 3) / 2 * 8;
+
+    for (i = 1; i <= h; i++)
+    {
+        printGivenLevel(root, i, space, print);
+        printf("\n\n\n");
+    }
+}
+
 /*  Function: getMinValueNode()
     Return Return *Tree Node* with minimum value from given tree.
     
@@ -370,17 +466,17 @@ void printGivenLevel(BinaryTreeNode *root, int level, double space, void (*print
         BinaryTreeNode *		- _BinaryTreeNode_ with minimum value.
 
     See Also:
-        <getMaxValueNode>
+        <getMaxValueNode()>
 
 */
 BinaryTreeNode *getMinValueNode(BinaryTreeNode *root)
 {
-	BinaryTreeNode *current = root;
+    BinaryTreeNode *current = root;
 
-	while (current->left != NULL)
-		current = current->left;
+    while (current->left != NULL)
+        current = current->left;
 
-	return current;
+    return current;
 }
 
 /*  Function: getMaxValueNode()
@@ -393,15 +489,15 @@ BinaryTreeNode *getMinValueNode(BinaryTreeNode *root)
         BinaryTreeNode *		- _BinaryTreeNode_ with maximum value.
 
     See Also:
-        <getMinValueNode>
+        <getMinValueNode()>
 
 */
 BinaryTreeNode *getMaxValueNode(BinaryTreeNode *root)
 {
-	BinaryTreeNode *current = root;
+    BinaryTreeNode *current = root;
 
-	while (current->right != NULL)
-		current = current->right;
+    while (current->right != NULL)
+        current = current->right;
 
-	return current;
+    return current;
 }
