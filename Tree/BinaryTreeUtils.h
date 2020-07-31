@@ -122,7 +122,7 @@ int max(int num1, int num2)
         int						- Height of node.
 
     See Also:
-        <getBalanceFactor()>
+        <updateHeight()>
 
 */
 int getHeight(BinaryTreeNode *ptr)
@@ -191,8 +191,8 @@ BinaryTreeNode *createNode(void *dataPtr)
 		--- 
 	 
     Returns:
-        int				- Return TREUE[1] if key is found, 
-						  Otherwise return FALSE[0].
+        int				- Return *TREUE[1]* if *Tree Node* is found witch given data, 
+						  Otherwise return *FALSE[0]*.
 
     See Also:
         <countTotalNodes()>
@@ -376,7 +376,7 @@ void print2DUtil(BinaryTreeNode *root, int space, void (*print)(const void *))
 		void (*print)(const void *)     - Function to print data.
 	 
     See Also:
-        <print2D()>	: Wrapper over print2DUtil()
+        <print2DUtil()>
 */
 void print2D(BinaryTreeNode *root, void (*print)(const void *))
 {
