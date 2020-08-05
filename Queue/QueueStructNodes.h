@@ -47,6 +47,7 @@ typedef struct QueueNode
         QueueNode *rear;
         
     } Queue;
+    ---
  */
 typedef struct Queue
 {

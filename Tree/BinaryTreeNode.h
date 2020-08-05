@@ -23,6 +23,7 @@
 		int height;
 
 	} BinaryTreeNode;
+	---
 */
 typedef struct BinaryTreeNode
 {

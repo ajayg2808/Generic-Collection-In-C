@@ -5,7 +5,7 @@
  *       Can be used for educational, academic projects, learning and any personal usage.
  */
 
-/*  title: AVL_Tree.h
+/*  title: BinaryTreeUtils.h
     + _Author_      : *AJAY G.*
     + _Copyright_   : *AJAY G. - Code Stack 2020*
     
@@ -276,7 +276,7 @@ int countTotalNodes(BinaryTreeNode *root)
 
 /*  Function: treeToArray()
     Copy data pointer from every *Tree Node* to Array of pointer.
-	All Nodes in *BInary Tree* is copied to Array given
+	All Nodes from *Binary Tree* are copied to given Array.
     
     Parameters:
         BinaryTreeNode *root		- Pointer to root node of tree, which converted to array.
