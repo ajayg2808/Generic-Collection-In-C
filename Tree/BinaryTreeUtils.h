@@ -180,11 +180,11 @@ BinaryTreeNode *createNode(void *dataPtr)
 }
 
 /*  Function: searchNodeBST()
-    Search *Tree Node* with given data in *Binary Tree*.
+    Search *Tree Node* with given data in *Binary Search Tree*.
     
     Parameters:
         BinaryTreeNode *root						- Pointer to root node of tree in which we gonna search.
-		void *dataPtr								- Pointer to data which need be searched in *Binary Tree*.
+		void *dataPtr								- Pointer to data which need be searched in *Binary Search Tree*.
 		int (*compare)(const void *, const void *)	- Compare function to compare data hold by dataPtr.
 		--- Code ---
 		int compare(const void *, const void *);
@@ -216,6 +216,39 @@ int searchNodeBST(BinaryTreeNode *root, void *dataPtr, int (*compare)(const void
     {
         return TRUE;
     }
+}
+
+/*  Function: searchNode()
+    Search *Tree Node* in given tree which data matches to provided data pointer.
+    
+    Parameters:
+        BinaryTreeNode *root                            - _BinaryTreeNode_ - *Tree* root pointer in which *Tree Node* will be searched.
+        void *dataPtr                                   - Pointer to data to search for *Tree Node*.
+        int (*compare)(const void *, const void *)      - Compare function to compare data hold by dataPtr.
+        --- Code ---
+		int compare(const void *, const void *);
+		--- 
+
+    Returns:
+        BinaryTreeNode *		                        - Return *TREUE[1]* if *Tree Node* is found with given data, 
+						                                  Otherwise return *FALSE[0]*.
+
+*/
+int searchNode(BinaryTreeNode *root, void *dataPtr, int (*compare)(const void *, const void *))
+{
+    int found = FALSE;
+    if (root != NULL)
+    {
+        if ((*compare)(root->dataPtr, dataPtr) == 0)
+        {
+            found = TRUE;
+        }
+        if (!found)
+            found = searchNode(root->left, dataPtr, compare);
+        if (!found)
+            found = searchNode(root->right, dataPtr, compare);
+    }
+    return found;
 }
 
 /*  Function: deleteTree()
@@ -312,6 +345,9 @@ int treeToArray(BinaryTreeNode *root, int *array[], int i)
     Parameters:
         BinaryTreeNode *root			- Pointer to root node of tree, which nodes we going to print.
 		void (*print)(const void *)     - Function to print data.
+        --- Code ---
+		void print(const void *,);
+		--- 
 	 
     See Also:
         <print2D()>
@@ -336,6 +372,9 @@ void printInOrder(BinaryTreeNode *root, void (*print)(const void *))
 		int space						- Space count to print empty space.
 										  It will automatically get incremented with every level.
 		void (*print)(const void *)     - Function to print data.
+        --- Code ---
+		void print(const void *,);
+		--- 
 	 
     See Also:
         <print2D>	: Wrapper over <print2DUtil()>
@@ -374,6 +413,9 @@ void print2DUtil(BinaryTreeNode *root, int space, void (*print)(const void *))
     Parameters:
         BinaryTreeNode *root			- Pointer to root node of tree.
 		void (*print)(const void *)     - Function to print data.
+        --- Code ---
+		void print(const void *,);
+		--- 
 	 
     See Also:
         <print2DUtil()>
@@ -392,6 +434,9 @@ void print2D(BinaryTreeNode *root, void (*print)(const void *))
         int level                       - Level of tree node
         double space                    - Space count to print empty spaces.
         void (*print)(const void *)     - Function to print data.
+        --- Code ---
+		void print(const void *,);
+		--- 
 
     See Also:
         <printLevelOrder()>
@@ -433,6 +478,9 @@ void printGivenLevel(BinaryTreeNode *root, int level, double space, void (*print
     Parameters:
         BinaryTreeNode *root            - Pointer to *root* of tree
         void (*print)(const void *)     - Function to print data.
+        --- Code ---
+		void print(const void *,);
+		--- 
 
     See Also:
         <printInOrder()>
@@ -445,7 +493,7 @@ void printLevelOrder(BinaryTreeNode *root, void (*print)(const void *))
 		printf(TREE_EMPTY_MSG);
 		return;
 	}
-    int h = root->height;
+    int h = updateHeight(root);
     int i;
     double space = (pow(2, h - 2) * 3) / 2 * 8;
 
@@ -456,7 +504,7 @@ void printLevelOrder(BinaryTreeNode *root, void (*print)(const void *))
     }
 }
 
-/*  Function: getMinValueNode()
+/*  Function: getMinValueNodeBST()
     Return Return *Tree Node* with minimum value from given tree.
     
     Parameters:
@@ -466,10 +514,10 @@ void printLevelOrder(BinaryTreeNode *root, void (*print)(const void *))
         BinaryTreeNode *		- _BinaryTreeNode_ with minimum value.
 
     See Also:
-        <getMaxValueNode()>
+        <getMaxValueNodeBST()>
 
 */
-BinaryTreeNode *getMinValueNode(BinaryTreeNode *root)
+BinaryTreeNode *getMinValueNodeBST(BinaryTreeNode *root)
 {
     BinaryTreeNode *current = root;
 
@@ -479,7 +527,7 @@ BinaryTreeNode *getMinValueNode(BinaryTreeNode *root)
     return current;
 }
 
-/*  Function: getMaxValueNode()
+/*  Function: getMaxValueNodeBST()
     Return Return *Tree Node* with maximum value from given tree.
     
     Parameters:
@@ -489,10 +537,10 @@ BinaryTreeNode *getMinValueNode(BinaryTreeNode *root)
         BinaryTreeNode *		- _BinaryTreeNode_ with maximum value.
 
     See Also:
-        <getMinValueNode()>
+        <getMinValueNodeBST()>
 
 */
-BinaryTreeNode *getMaxValueNode(BinaryTreeNode *root)
+BinaryTreeNode *getMaxValueNodeBST(BinaryTreeNode *root)
 {
     BinaryTreeNode *current = root;
 

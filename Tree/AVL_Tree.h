@@ -233,7 +233,6 @@ BinaryTreeNode *deleteNode(BinaryTreeNode *root, void *dataPtr, int (*compare)(c
 	{
 		root->right = deleteNode(root->right, dataPtr, compare);
 	}
-
 	else
 	{
 		if ((root->left == NULL) || (root->right == NULL))
@@ -247,13 +246,15 @@ BinaryTreeNode *deleteNode(BinaryTreeNode *root, void *dataPtr, int (*compare)(c
 			}
 			else
 			{
-				root = temp;
+				temp = root;
+				root = root->left ? root->left : root->right;
 			}
+			free(temp->dataPtr);
 			free(temp);
 		}
 		else
 		{
-			BinaryTreeNode *temp = getMinValueNode(root->right);
+			BinaryTreeNode *temp = getMinValueNodeBST(root->right);
 
 			root->dataPtr = temp->dataPtr;
 

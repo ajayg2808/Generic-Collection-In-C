@@ -97,7 +97,7 @@ BinaryTreeNode *insertLevelOrder(BinaryTreeNode *root, void *dataPtr, int level,
 
 /*  Function: insertNode()
     Wrapper to <insertLevelOrder()>
-    Insert new *Tree Nodes* in *Complete Binary Tree*.
+    Insert new *Tree Node* in *Complete Binary Tree*.
     
     Parameters:
         BinaryTreeNode *root    - _BinaryTreeNode_ - *Tree* root pointer in which new *Tree Node* will be added.
@@ -112,7 +112,7 @@ BinaryTreeNode *insertLevelOrder(BinaryTreeNode *root, void *dataPtr, int level,
 */
 BinaryTreeNode *insertNode(BinaryTreeNode *root, void *dataPtr)
 {
-    int ch, inserted = FALSE;
+    int inserted = FALSE;
     if (root == NULL)
     {
         return (createNode(dataPtr));
@@ -143,6 +143,9 @@ BinaryTreeNode *insertNode(BinaryTreeNode *root, void *dataPtr)
         BinaryTreeNode *root                            - _BinaryTreeNode_ - *Tree* root pointer from *Tree Node* will be deleted.
         void *dataPtr                                   - Pointer to data to search for *Tree Node* which should be deleted.
         int (*compare)(const void *, const void *)      - Compare function to compare data hold by dataPtr.
+        --- Code ---
+		int compare(const void *, const void *);
+		---
 
     Returns:
         BinaryTreeNode *		                        - _BinaryTreeNode_ pointer. NULL if last *Tree Node* deleted.
@@ -171,6 +174,7 @@ BinaryTreeNode *deleteNode(BinaryTreeNode *root, void *dataPtr, int (*compare)(c
                 enQueue(queue, (void *)(t->right));
             }
 
+            // Find 1st node with given key
             if ((*compare)(ptr->dataPtr, dataPtr) == 0 && nodeToDelete == NULL)
             {
                 nodeToDelete = t;
@@ -184,6 +188,7 @@ BinaryTreeNode *deleteNode(BinaryTreeNode *root, void *dataPtr, int (*compare)(c
         }
         else
         {
+            // Find parent of nodeToDelete
             enQueue(queue, (void *)ptr);
             while (!isEmpty(queue))
             {
@@ -253,37 +258,4 @@ BinaryTreeNode *deleteNode(BinaryTreeNode *root, void *dataPtr, int (*compare)(c
         }
     }
     return root;
-}
-
-/*  Function: searchNode()
-    Search *Tree Node* in given tree which data matches to provided data pointer.
-    
-    Parameters:
-        BinaryTreeNode *root                            - _BinaryTreeNode_ - *Tree* root pointer in which *Tree Node* will be searched.
-        void *dataPtr                                   - Pointer to data to search for *Tree Node*.
-        int (*compare)(const void *, const void *)      - Compare function to compare data hold by dataPtr.
-
-    Returns:
-        BinaryTreeNode *		                        - Return *TREUE[1]* if *Tree Node* is found with given data, 
-						                                  Otherwise return *FALSE[0]*.
-
-    See Also:
-        <insertNode()> : Wrapper to <insertLevelOrder()>
-
-*/
-int searchNode(BinaryTreeNode *root, void *dataPtr, int (*compare)(const void *, const void *))
-{
-    int found = FALSE;
-    if (root != NULL)
-    {
-        if ((*compare)(root->dataPtr, dataPtr) == 0)
-        {
-            found = TRUE;
-        }
-        if (!found)
-            found = searchNode(root->left, dataPtr, compare);
-        if (!found)
-            found = searchNode(root->right, dataPtr, compare);
-    }
-    return found;
 }
